@@ -1,0 +1,147 @@
+
+<!DOCTYPE html />
+<html>
+<head>
+	<title>Estimate</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style.css">
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/html2canvas.js"></script>
+<script type="text/javascript" src="js/jquery.plugin.html2canvas.js"></script>
+	<script src="js/MeasureTool.js"></script>
+	<script>
+		$(document).ready(function(){
+		  $("#next1").click(function(){
+			var street_number = $("#street_number").val();
+			var route = $("#route").val(); 
+			var streetAddress = street_number+" "+route;
+			var city = $("#locality").val(); 
+			var state = $("#administrative_area_level_1").val(); 
+			var postal_code = $("#postal_code").val(); 
+			var country = $("#country").val(); 
+			var area = $("#area_size").val();
+			var data = {
+            streetAddress : streetAddress,
+            city : city,
+			state : state,
+			postal_code : postal_code,
+			country : country,
+			SelectedArea: area
+            };
+			$.ajax({
+					type : 'POST',
+					url : 'https://hooks.zapier.com/hooks/catch/227685/op9d0m8',  
+					data: JSON.stringify(data),
+					success:function (data) {
+						console.log(data);
+					},
+					error: function(xhr, status, error) {
+					// handle error
+				  }
+				});
+			
+		    $(this).parents(".estimate-section").addClass("step2");
+		    $(this).parents(".estimate-section").removeClass("step1");
+		  });
+		  $("#next2").click(function(){
+		    $(this).parents(".estimate-section").addClass("step3");
+		    $(this).parents(".estimate-section").removeClass("step2");
+		  });
+		  $(".map-area #remove").click(function(){
+		    $(".map_desc").remove();
+		  });
+	});
+	</script>
+</head>
+<body>
+<div class="main-wrapper">
+	<header class="header">
+		<div class="container">
+			<div class="logo">
+				<img src="images/logo.png">
+			</div>
+		</div>
+	</header>
+	<div class="estimate-section step1">
+		<div class="container">
+			<form action="" method="POST">
+				<div class="step-bar"></div>
+				<div class="step-area">					
+					<h3>Please Enter Your Address to Start</h3>
+					    <p class="search-area"><input required="" autocomplete="off" type="text" data-hj-whitelist="true" class="autocomplete-input" placeholder="Enter your address to start!" role="combobox" id="pac-input" aria-autocomplete="list" aria-expanded="false" value="" style="outline: none;"></p> 
+						<p style="text-align:center;"><button id="get-start" type="button" class="button">Get Started</button></p> 
+					    <div class="map-area" id="maparea">
+					    	<p class="map_desc"><a id="remove"></a>1. Click on the corner of the lawn and select Measure Distance <br> 2. Click on next corner and draw the perimeter you’re looking to turf.</p>
+							<div id="map" style="min-height:500px;width:100%;margin:0px auto;">	</div>
+							<a id="next1" onclick="measureTool.end()" class="button">Next</a>
+						</div>
+				</div>
+
+				<div class="grass-type">
+					<h3>Select Artificial Turf</h3>
+					<ul>
+						<li>
+							<input type="radio" name="grasstype" value="Spring Fescue">
+							<label>
+								<img src="https://artificialgrass.lazylawn.ca/wp-content/uploads/2021/04/Spring-Fescue.jpg">
+								Spring Fescue
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="grasstype" value="Summer Fescue" />
+							<label>
+								<img src="https://artificialgrass.lazylawn.ca/wp-content/uploads/2021/04/Summer-Fescue.jpg">
+								Summer Fescue
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="grasstype" value="Lemongrass" />
+							<label>
+								<img src="https://artificialgrass.lazylawn.ca/wp-content/uploads/2021/04/Lemongrass.jpg">
+								Lemongrass
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="grasstype" value="Putting Green" />
+							<label>
+								<img src="images/PuttingGreen.JPG">
+								Putting Green
+							</label>
+						</li>
+					</ul>
+					<a id="next2" class="button">Next</a>
+				</div>
+				<div class="detail-info">
+					<h3>For a no-obligation Quote and FREE Samples</h3>
+					<h3>Please Complete the form</h3>
+					<div class="info-inner">
+						<p><input type="text" name="firstname" placeholder="Your First Name" required /></p>
+						<p><input type="text" name="lastname" placeholder="Your Last Name" required /></p>
+						<p><input type="email" name="email" placeholder="Your Email" required /></p>
+						<p><input type="text" name="phone" placeholder="Phone" /></p>
+						<p><label>Area(ft2):</label><input type="text" name="area_size" id="area_size"></p>
+						<p id="selected_area" style="display:none;"></p>
+						<input type="hidden" name="img_val" id="img_val" value="" />
+						<input type="hidden" name="street_number" id="street_number" placeholder="Street number">
+						<input type="hidden" name="route" id="route" placeholder="Street address">
+						<input type="hidden" name="city" id="locality" placeholder="City">
+						<input type="hidden" name="state" id="administrative_area_level_1" placeholder="State">
+						<input type="hidden" name="postal_code" id="postal_code" placeholder="Zip Code">
+						<input type="hidden" name="country" id="country" placeholder="Country">
+					</div>
+					<input type="submit" class="button" name="estimate_Submit" value="Submit">
+				</div>
+			</form>
+		</div>
+
+	</div>
+	<footer class="footer">
+		<div class="container">
+			<p class="copyright">© Copyright 2021 - Lazy Lawn - <a style="color: #fff;" href="tel:+16475603670" data-ctm-watch-id="7" data-ctm-tracked="1" data-observe="1" data-observer-id="3">1-647-560-3670 (LAWN)</a></p>
+		</div>
+	</footer>
+</div>
+<script src="js/custom.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBm11rR-k_2RCBQEULSALqkgrNf6vCAhu8&libraries=geometry,places&callback=initMap"></script>
+</body>
+</html>
